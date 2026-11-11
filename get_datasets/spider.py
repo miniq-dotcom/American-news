@@ -5,7 +5,7 @@ from lxml import html
 # 常量
 WEBSITE_URL1 = "https://www.whitehouse.gov/news/"
 HTML_TITLE = '//*[@id="wp--skip-link--target"]/div[2]/ul/li/div/div/h2/a'
-HTML_CONTENT = '//*[@id="wp--skip-link--target"]/div/p/text()'
+HTML_CONTENT = '//*[@id="wp--skip-link--target"]/div/p'
 
 # 获取HTML元素对象
 def get_element(url):
@@ -28,8 +28,11 @@ def get_website_one(url,xpath):
 # 获取新闻内容
 def get_news_content(next_url,next_xpath):
     document = get_element(next_url)
-    contents = document.xpath(next_xpath)
-    return contents
+    paragraphs = document.xpath(next_xpath)
+
+    for paragraph in paragraphs:
+        paragraph = "".join(paragraph.xpath('.//text()'))
+        yield paragraph
 
 
 # //*[@id="wp--skip-link--target"]/div/p[1]/text()
@@ -37,10 +40,10 @@ def get_news_content(next_url,next_xpath):
 
 # 主程序
 def main():
-    for a, b in get_website_one(WEBSITE_URL1, HTML_TITLE):
-        content = get_news_content(a, HTML_CONTENT)
-        yield content
+    pass
 
 if __name__ == "__main__":
-    for content in main():
-        print(content)
+    for a, b in get_website_one(WEBSITE_URL1,HTML_TITLE):
+        for content in get_news_content(a,HTML_CONTENT):
+            print(content)
+        print()
