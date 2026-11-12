@@ -29,21 +29,23 @@ def get_website_one(url,xpath):
 def get_news_content(next_url,next_xpath):
     document = get_element(next_url)
     paragraphs = document.xpath(next_xpath)
+    content = ''
 
     for paragraph in paragraphs:
         paragraph = "".join(paragraph.xpath('.//text()'))
-        yield paragraph
+        content += paragraph
+    yield content
 
 
 # //*[@id="wp--skip-link--target"]/div/p[1]/text()
 # //*[@id="wp--skip-link--target"]/div/p[2]/text()
 
-# 主程序
 def main():
-    pass
-
-if __name__ == "__main__":
     for a, b in get_website_one(WEBSITE_URL1,HTML_TITLE):
         for content in get_news_content(a,HTML_CONTENT):
-            print(content)
-        print()
+            yield content,b
+
+if __name__ == "__main__":
+    for content,b in main():
+        print(f"正文是：{content}")
+    print()
