@@ -1,51 +1,47 @@
 import requests
-from lxml import html
+from lxml import etree,html
 
 
-# 常量
-WEBSITE_URL1 = "https://www.whitehouse.gov/news/"
-HTML_TITLE = '//*[@id="wp--skip-link--target"]/div[2]/ul/li/div/div/h2/a'
+NEWS_XML = 'https://www.whitehouse.gov/news/feed/'
 HTML_CONTENT = '//*[@id="wp--skip-link--target"]/div/p'
 
-# 获取HTML元素对象
-def get_element(url):
-    response = requests.get(url)
-    document = html.fromstring(response.text)
-    return document
 
-
-
-# 获取新闻标题与新闻具体内容网站
-def get_website_one(url,xpath):
-    document = get_element(url)
-    nodes = document.xpath(xpath)
-    for node in nodes:
-        website = node.get('href')
-        title = node.xpath('.//text()')[0]
-        yield website, title
+# 使用RSS查询新闻标题，新闻发布时间，新闻具体网站
+def get_data(url):
+    response = requests.get(NEWS_XML)
+    document = etree.fromstring(response.content)
+    titles = document.xpath('//title/text()')
+    del titles[0]
+    pubDates = document.xpath('//pubDate/text()')
+    urls = document.xpath('//guid/text()')
+    return titles, pubDates, urls
 
 
 # 获取新闻内容
-def get_news_content(next_url,next_xpath):
-    document = get_element(next_url)
-    paragraphs = document.xpath(next_xpath)
-    content = ''
+def get_news_content(urls:list,next_xpath):  # url,HTML_CONTENT
+    for url in urls:
+        response = requests.get(url)
+        document = html.fromstring(response.content)
+        paragraphs = document.xpath(next_xpath)
+        content = ''
 
-    for paragraph in paragraphs:
-        paragraph = "".join(paragraph.xpath('.//text()'))
-        content += paragraph
-    yield content
+        for paragraph in paragraphs:
+            paragraph = "".join(paragraph.xpath('.//text()'))
+            content += paragraph
+        yield content
 
-
-# //*[@id="wp--skip-link--target"]/div/p[1]/text()
-# //*[@id="wp--skip-link--target"]/div/p[2]/text()
 
 def main():
-    for a, b in get_website_one(WEBSITE_URL1,HTML_TITLE):
-        for content in get_news_content(a,HTML_CONTENT):
-            yield content,b
+    titles, pubDates, urls = get_data(NEWS_XML)
+    i = 0
+    for content in get_news_content(urls, HTML_CONTENT):
+        i += 1
+        yield titles[i], pubDates[i], content
+        if i == len(urls)-1:
+            break
 
-if __name__ == "__main__":
-    for content,b in main():
-        print(f"正文是：{content}")
-    print()
+
+if __name__ == '__main__':
+    for title, pubDate, content in main():
+        print(f"Title: {title}, PubDate: {pubDate}, Content: {content}")
+

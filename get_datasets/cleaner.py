@@ -13,10 +13,11 @@ if not os.path.isdir("data"):
 
 
 news_list = []
-for content,title in main():
+for title, pubDate, content in main():
     dict = {}
     content = content.replace('\xa0', ' ')
     dict['title'] = title
+    dict['pubDate'] = pubDate[:-6]
     dict['content'] = content
     news_list.append(dict)
 
