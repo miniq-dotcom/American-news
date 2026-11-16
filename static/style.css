@@ -1,0 +1,160 @@
+/* 基础样式：使用原生 CSS，颜色和间距可以直接在这里修改。 */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #10151d;
+  color: #e1e7ef;
+  font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+header {
+  padding: 24px;
+  background: #18212e;
+  border-bottom: 1px solid #334155;
+}
+
+header h1 {
+  margin: 0;
+  color: #76c9eb;
+  font-size: 26px;
+}
+
+header p {
+  margin: 4px 0 0;
+  color: #a5b4c7;
+}
+
+main {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 0 20px;
+}
+
+/* 统计和搜索区域。flex-wrap 允许小屏幕自动换行。 */
+.overview,
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 28px;
+  margin-bottom: 18px;
+}
+
+.overview p {
+  margin: 0;
+}
+
+input,
+button {
+  padding: 10px 14px;
+  border: 1px solid #475569;
+  border-radius: 4px;
+  font: inherit;
+}
+
+input {
+  flex: 1;
+  min-width: 180px;
+  background: #18212e;
+  color: #e1e7ef;
+}
+
+button {
+  background: #76c9eb;
+  color: #10202b;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+input:focus-visible,
+button:focus-visible {
+  outline: 2px solid #76c9eb;
+  outline-offset: 3px;
+}
+
+#status,
+.news-time,
+footer {
+  color: #a5b4c7;
+}
+
+/* 每条新闻按多行展示，原文、概括和分析分别占一个区块。 */
+.news-card {
+  margin-bottom: 22px;
+  padding: 24px;
+  background: #18212e;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  overflow-wrap: anywhere;
+}
+
+.news-time {
+  margin: 0 0 8px;
+  font-size: 12px;
+}
+
+.news-title {
+  margin: 0 0 20px;
+  font-size: 21px;
+  line-height: 1.5;
+}
+
+.news-section {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid #334155;
+}
+
+.news-section h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+
+.news-section p {
+  margin: 0;
+  /* 保留 JSON 字符串中的换行，长文本仍然自动折行。 */
+  white-space: pre-wrap;
+}
+
+.summary-section h3 {
+  color: #76c9eb;
+}
+
+.analysis-section h3 {
+  color: #edbc79;
+}
+
+footer {
+  padding: 24px 20px;
+  text-align: center;
+  font-size: 12px;
+}
+
+/* 手机端只调整必要的间距和字号。 */
+@media (max-width: 600px) {
+  header {
+    padding: 20px;
+  }
+
+  .news-card {
+    padding: 16px;
+  }
+
+  .news-title {
+    font-size: 18px;
+  }
+
+  .toolbar input,
+  .toolbar button {
+    width: 100%;
+  }
+}

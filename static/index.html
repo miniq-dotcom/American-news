@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>American News</title>
+    <link rel="icon" href="data:,">
+    <!-- FastAPI 把静态目录挂载在 /static，所以这里使用绝对路径。 -->
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/script.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>American News</h1>
+      <p>美国政策、经济与金融新闻</p>
+    </header>
+
+    <main>
+      <!-- JS 取得后端数据后，更新这些元素的文字。 -->
+      <section class="overview" aria-label="新闻概览">
+        <p>新闻总量：<strong id="news-count">0</strong> 条</p>
+        <p>最新发布时间：<span id="latest-time">暂无数据</span></p>
+      </section>
+
+      <section class="toolbar" aria-label="新闻工具">
+        <input id="search-input" type="search" placeholder="搜索新闻标题…" aria-label="搜索新闻标题">
+        <button id="load-button" type="button">从后端加载新闻</button>
+      </section>
+
+      <!-- 当前后端没有新闻接口；页面先保持空白，不内置新闻或复制 JSON。 -->
+      <p id="status" role="status">等待接入 FastAPI 新闻接口，目前没有加载新闻。</p>
+      <section id="news-list" aria-label="新闻列表"></section>
+    </main>
+
+    <!-- template 只定义一条新闻的结构，JS 会复制它并填入数据。 -->
+    <template id="news-template">
+      <article class="news-card">
+        <p class="news-time"></p>
+        <h2 class="news-title"></h2>
+
+        <section class="news-section">
+          <h3>新闻原文</h3>
+          <p class="news-content"></p>
+        </section>
+
+        <section class="news-section summary-section">
+          <h3>AI Summary · 新闻概括</h3>
+          <p class="news-summary"></p>
+        </section>
+
+        <section class="news-section analysis-section">
+          <h3>AI Analysis · 金融分析</h3>
+          <p class="news-analysis"></p>
+        </section>
+      </article>
+    </template>
+
+    <footer>American News · AI 内容请结合新闻原文核验</footer>
+  </body>
+</html>
