@@ -35,10 +35,8 @@ def main():
     titles, pubDates, urls = get_data(NEWS_XML)
     i = 0
     for content in get_news_content(urls, HTML_CONTENT):
-        i += 1
         yield titles[i], pubDates[i], content
-        if i == len(urls)-1:
-            break
+        i += 1
 
 
 if __name__ == '__main__':

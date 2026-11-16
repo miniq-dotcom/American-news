@@ -8,8 +8,8 @@ import os
 # 但是有缺失，现在不想管，等以后看看有什么好方法
 # 数据清理的话应该就只有\xa0需要替换成“”
 
-if not os.path.isdir("data"):
-    os.mkdir("data")
+if not os.path.isdir("../data"):
+    os.mkdir("../data")
 
 
 news_list = []
@@ -19,9 +19,11 @@ for title, pubDate, content in main():
     dict['title'] = title
     dict['pubDate'] = pubDate[:-6]
     dict['content'] = content
+    dict['summary'] = None
+    dict['analysis'] = None
     news_list.append(dict)
 
-with open("data/news.json", 'w', encoding="utf-8") as f:
+with open("../data/news.json", 'w', encoding="utf-8") as f:
     json.dump(news_list, f, ensure_ascii=False, indent=4)
 
 
