@@ -95,7 +95,8 @@ async function loadNews() {
       throw new Error("请求失败，HTTP 状态码：" + response.status);
     }
 
-    const data = await response.json();
+    const result = await response.json();
+    const data = result.data;
     if (!Array.isArray(data)) {
       throw new Error("接口应该返回一个新闻数组。");
     }
